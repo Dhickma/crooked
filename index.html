@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>T-Shirt Order Form - Slightly Crooked</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Pacifico&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{
+      font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;
+      background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);
+      min-height:100vh;padding:15px;display:flex;justify-content:center;align-items:flex-start;padding-top:20px;padding-bottom:40px
+    }
+    .form-container{
+      background:linear-gradient(135deg,#E8B4D4 0%,#D8A4C4 100%);
+      max-width:1000px;width:100%;border-radius:20px;box-shadow:0 20px 60px rgba(0,0,0,.3);overflow:hidden;position:relative
+    }
+    .order-details-wrapper{
+      background:rgba(255,255,255,.45);padding:30px 20px;border-radius:20px 20px 0 0;position:relative
+    }
+    .order-details-wrapper::after{
+      content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:linear-gradient(90deg,transparent 0%,rgba(118,75,162,.3) 50%,transparent 100%)
+    }
+    @media (min-width:768px){.order-details-wrapper{padding:50px 40px}}
+    .checkout-wrapper{
+      background:linear-gradient(135deg,rgba(255,255,255,.15) 0%,rgba(255,255,255,.25) 100%);
+      padding:30px 20px;position:relative
+    }
+    @media (min-width:768px){.checkout-wrapper{padding:40px}}
+    .header{text-align:center;margin-bottom:35px}
+    .logo-container{display:inline-block;margin-bottom:25px;max-width:100%}
+    .logo-image{
+      width:100%;
+      height:auto;
+      max-width:min(400px,80vw);
+      display:block;
+      object-fit:contain;
+    }
+    @media (min-width:640px){
+      .logo-image{max-width:min(450px,70vw)}
+    }
+    @media (min-width:1024px){
+      .logo-image{max-width:500px}
+    }
+    h2{font-size:clamp(24px,5vw,36px);color:#2c2c2c;margin-bottom:12px;letter-spacing:3px;font-weight:700}
+    .contact-info{margin-top:20px}
+    .contact-info a{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:12px 24px;
+      background:rgba(255,255,255,.8);
+      border:2px solid rgba(118,75,162,.2);
+      border-radius:50px;
+      color:#764ba2;
+      text-decoration:none;
+      font-size:clamp(14px,2.8vw,16px);
+      font-weight:600;
+      transition:all .3s ease;
+      box-shadow:0 2px 8px rgba(0,0,0,.08);
+    }
+    .contact-info a::before{
+      content:'✉';
+      font-size:18px;
+      display:flex;
+      align-items:center;
+    }
+    .contact-info a:hover{
+      background:#fff;
+      border-color:#764ba2;
+      transform:translateY(-2px);
+      box-shadow:0 4px 16px rgba(118,75,162,.2);
+    }
+    .form-section{
+      background:rgba(255,255,255,.35);padding:25px 20px;border-radius:15px;backdrop-filter:blur(10px);
+      margin-bottom:20px;box-shadow:0 4px 15px rgba(0,0,0,.1)
+    }
+    @media (min-width:768px){.form-section{padding:30px}}
+    .section-title{
+      font-size:clamp(16px,3vw,19px);font-weight:700;color:#2c2c2c;margin-bottom:20px;
+      text-transform:uppercase;letter-spacing:1.5px;border-bottom:3px solid #2c2c2c;padding-bottom:10px
+    }
+    .section-helper{color:#4a4a4a;font-size:14px;margin-top:-15px;margin-bottom:20px;font-weight:400}
+    .form-row{display:grid;grid-template-columns:1fr;gap:15px;margin-bottom:15px}
+    @media (min-width:640px){.form-row.two-col{grid-template-columns:1fr 1fr}.form-row.three-col{grid-template-columns:1fr 1fr 1fr}}
+    .form-group{margin-bottom:0}
+    label{display:block;color:#2c2c2c;font-weight:700;margin-bottom:8px;font-size:clamp(12px,2.5vw,14px);text-transform:uppercase;letter-spacing:.5px}
+    input[type="text"],input[type="email"],input[type="tel"],input[type="date"],input[type="number"],textarea,select{
+      width:100%;padding:14px 16px;border:2px solid transparent;border-radius:10px;background:rgba(255,255,255,.95);
+      font-size:15px;transition:all .3s ease;font-family:inherit;-webkit-appearance:none;-moz-appearance:none;appearance:none
+    }
+    select{
+      background-image:url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23333' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+      background-repeat:no-repeat;background-position:right 12px center;background-size:20px;padding-right:45px;cursor:pointer
+    }
+    input:focus,textarea:focus,select:focus{outline:none;background:#fff;border-color:#764ba2;box-shadow:0 0 0 4px rgba(118,75,162,.2)}
+    textarea{resize:vertical;min-height:100px;line-height:1.6}
+
+    .order-item-row{
+      display:grid;grid-template-columns:1fr;gap:15px;padding:20px;background:rgba(255,255,255,.4);
+      border-radius:12px;margin-bottom:15px;position:relative;border:2px solid transparent;transition:all .3s ease
+    }
+    .order-item-row:hover{border-color:rgba(118,75,162,.3);background:rgba(255,255,255,.5)}
+    .item-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:15px}
+    .item-number{font-weight:700;color:#2c2c2c;font-size:16px}
+    .remove-item{background:#ff6b6b;color:#fff;border:none;padding:6px 12px;border-radius:6px;cursor:pointer;font-size:13px;transition:all .2s}
+    .remove-item:hover{background:#ff5252;transform:translateY(-1px)}
+
+    /* Cleaner, roomier layout on wider screens: two lines of fields */
+    @media (min-width:768px){
+      .order-item-row{grid-template-columns:repeat(3,1fr)}
+    }
+
+    .size-type-group{display:flex;gap:10px;margin-bottom:10px}
+    .size-type-option{flex:1}
+    .size-type-option input[type="radio"]{display:none}
+    .size-type-option label{
+      display:block;padding:10px;background:rgba(255,255,255,.7);border:2px solid transparent;border-radius:8px;
+      cursor:pointer;text-align:center;transition:all .2s;font-size:13px;font-weight:600
+    }
+    .size-type-option input[type="radio"]:checked+label{
+      background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:#fff;border-color:#764ba2
+    }
+
+    .add-row-btn{
+      background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:#fff;border:none;padding:14px 28px;border-radius:10px;
+      font-size:15px;font-weight:600;cursor:pointer;transition:all .3s ease;display:inline-flex;align-items:center;gap:8px
+    }
+    .add-row-btn:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(118,75,162,.3)}
+    .add-row-btn::before{content:'+';font-size:20px;font-weight:700}
+
+    .design-selector{
+      background:linear-gradient(135deg,rgba(255,182,193,.2) 0%,rgba(255,218,185,.2) 100%);
+      padding:20px;border-radius:12px;margin-bottom:20px;border:2px solid rgba(255,182,193,.3)
+    }
+    .design-radio-group{display:flex;gap:15px;margin-bottom:15px;flex-wrap:wrap;justify-content:center}
+    .design-radio-option{position:relative}
+    .design-radio-option input[type="radio"]{display:none}
+    .design-radio-option label{
+      display:block;padding:10px 20px;background:rgba(255,255,255,.7);border:2px solid transparent;border-radius:8px;
+      cursor:pointer;transition:all .2s;font-weight:500;text-transform:none
+    }
+    .design-radio-option input[type="radio"]:checked+label{
+      background:linear-gradient(135deg,#ff69b4 0%,#ff1493 100%);color:#fff;border-color:#ff1493
+    }
+
+    .additional-design{background:rgba(255,255,255,.4);padding:20px;border-radius:10px;margin-top:15px;border:2px solid rgba(255,105,180,.2)}
+    .additional-design-title{font-weight:700;color:#2c2c2c;margin-bottom:10px;font-size:15px}
+
+    .option-card{background:rgba(255,255,255,.7);padding:20px 15px;border-radius:12px;text-align:center;cursor:pointer;transition:all .3s ease;border:3px solid transparent;position:relative}
+    .option-card:hover{background:rgba(255,255,255,.85);transform:translateY(-3px);box-shadow:0 8px 20px rgba(0,0,0,.15)}
+    .option-card.selected{background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);border-color:#764ba2}
+    .option-card.selected .option-title,.option-card.selected .option-subtitle{color:#fff}
+    .option-card.selected .option-icon{transform:scale(1.2)}
+    .option-card input[type="radio"]{position:absolute;opacity:0}
+    .option-icon{font-size:32px;margin-bottom:10px;display:block;transition:transform .3s ease}
+    .option-title{font-weight:700;color:#2c2c2c;font-size:14px;text-transform:uppercase;letter-spacing:.5px}
+    .option-subtitle{font-size:12px;color:#666;margin-top:5px}
+
+    .pricing-message{
+      background:linear-gradient(135deg,#fef3c7 0%,#fde68a 100%);
+      border:2px solid #f59e0b;border-radius:12px;padding:25px;text-align:center;position:relative;overflow:hidden
+    }
+    .pricing-message::before{content:'✨';position:absolute;top:-20px;right:-20px;font-size:80px;opacity:.1;transform:rotate(-15deg)}
+    .pricing-icon{font-size:36px;margin-bottom:15px}
+    .pricing-title{font-size:20px;font-weight:700;color:#92400e;margin-bottom:10px;text-transform:none}
+    .pricing-text{color:#78350f;font-size:15px;line-height:1.6}
+
+    .submit-btn{
+      width:100%;padding:20px;background:linear-gradient(135deg,#10b981 0%,#059669 100%);color:#fff;border:none;border-radius:12px;
+      font-size:18px;font-weight:700;text-transform:uppercase;letter-spacing:1px;cursor:pointer;transition:all .3s ease;margin-top:30px;
+      box-shadow:0 4px 15px rgba(16,185,129,.3)
+    }
+    .submit-btn:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(16,185,129,.4)}
+  </style>
+</head>
+<body>
+  <div class="form-container">
+      <form id="orderForm" name="tshirt-order" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+        <input type="hidden" name="form-name" value="tshirt-order">
+        <div style="display:none;">
+          <label>Don't fill this out if you're human:
+            <input name="bot-field" type="text">
+          </label>
+        </div>
+        <input type="hidden" name="orderNumber" id="hiddenOrderNumber">
+
+    <div class="order-details-wrapper">
+      <div class="header">
+        <div class="logo-container">
+          <img src="logo.png" alt="Slightly Crooked Designs" class="logo-image">
+        </div>
+        <h2>T-SHIRT ORDER FORM</h2>
+        <div class="contact-info">
+          <a href="mailto:heyfriend@shopcrooked.com">heyfriend@shopcrooked.com</a>
+        </div>
+      </div>
+
+      <!-- Netlify form -->
+        <!-- DESIGN COUNT (moved before Your Design) -->
+        <div class="form-section design-selector" id="designCountSection">
+          <label style="text-transform:none;font-weight:600;margin-bottom:10px;display:block;text-align:center;">
+            First thing's first! How many different designs will you need?
+          </label>
+          <div class="design-radio-group">
+            <div class="design-radio-option">
+              <input type="radio" id="oneDesign" name="designCount" value="1" checked>
+              <label for="oneDesign">Just One Design</label>
+            </div>
+            <div class="design-radio-option">
+              <input type="radio" id="multipleDesigns" name="designCount" value="multiple">
+              <label for="multipleDesigns">Multiple Designs</label>
+            </div>
+          </div>
+        </div>
+
+        <!-- DESIGN BLOCKS -->
+        <div id="designBlocks">
+          <div class="design-block" data-design="1">
+            <div class="form-section">
+              <div class="section-title">Your Design</div>
+              <p class="section-helper">Tell me what you're looking for and we'll make it happen!</p>
+              <div class="form-group">
+                <label for="designDescription_1">Design Description</label>
+                <textarea name="designDescription_1" id="designDescription_1" placeholder="Describe what you want on your shirts..." required></textarea>
+              </div>
+            </div>
+
+            <!-- Shirt Details for Design #1 -->
+            <div class="form-section">
+              <div class="section-title">Shirt Details</div>
+              <p class="section-helper">Add each size/color combination you need.</p>
+
+              <div id="orderItemsContainer_1" class="order-items-container" data-counter="1">
+                <div class="order-item-row" data-item="1">
+                  <div class="item-header" style="grid-column:1/-1;">
+                    <span class="item-number">Item #1</span>
+                  </div>
+
+                  <div class="form-group">
+                    <label>Size Type</label>
+                    <div class="size-type-group">
+                      <div class="size-type-option">
+                        <input type="radio" id="type1_adult_d1" name="sizeType_1_d1" value="adult" checked>
+                        <label for="type1_adult_d1">Adult</label>
+                      </div>
+                      <div class="size-type-option">
+                        <input type="radio" id="type1_youth_d1" name="sizeType_1_d1" value="youth">
+                        <label for="type1_youth_d1">Youth</label>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="size_1_d1">Size</label>
+                    <select name="size_1_d1" id="size_1_d1">
+                      <option value="">Select</option>
+                    </select>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="qty_1_d1">Qty</label>
+                    <input type="number" name="quantity_1_d1" id="qty_1_d1" min="1" value="1" required>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="color_1_d1">Color</label>
+                    <input type="text" name="color_1_d1" id="color_1_d1" placeholder="Shirt Color">
+                  </div>
+
+                  <div class="form-group">
+                    <label for="material_1_d1">Material</label>
+                    <select name="material_1_d1" id="material_1_d1">
+                      <option value="">Select</option>
+                      <option value="100% Cotton">100% Cotton</option>
+                      <option value="Cotton Blend">Cotton Blend</option>
+                      <option value="Poly Blend">Poly Blend</option>
+                      <option value="Tri-Blend">Tri-Blend</option>
+                      <option value="Performance">Performance</option>
+                    </select>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="style_1_d1">Style</label>
+                    <select name="style_1_d1" id="style_1_d1">
+                      <option value="">Select</option>
+                      <option value="Unisex">Unisex</option>
+                      <option value="Women">Women</option>
+                      <option value="Pocket">Pocket</option>
+                      <option value="Sweatshirt">Sweatshirt</option>
+                      <option value="Hoodie">Hoodie</option>
+                      <option value="Long Sleeve">Long Sleeve</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <button type="button" class="add-row-btn" data-add-row-for="1">Add Another Size/Color</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- “Add another design” appears only for multiple designs -->
+        <div class="form-section" id="addDesignSection" style="display:none;">
+          <button type="button" class="add-row-btn" id="addDesignBtn">Add another design</button>
+        </div>
+    </div>
+
+    <!-- CHECKOUT -->
+    <div class="checkout-wrapper">
+      <!-- Order meta -->
+      <div class="form-section">
+        <div class="section-title">Order Details</div>
+        <div class="form-row two-col">
+          <div class="form-group">
+            <label for="orderDate">Order Date</label>
+            <input type="date" id="orderDate" name="orderDate" readonly required>
+          </div>
+          <div class="form-group">
+            <label for="orderNumberDisplay">Order Number</label>
+            <input type="text" id="orderNumberDisplay" readonly>
+          </div>
+        </div>
+      </div>
+
+      <!-- Customer Information -->
+      <div class="form-section">
+        <div class="section-title">Customer Information</div>
+        <div class="form-row two-col">
+          <div class="form-group">
+            <label for="customerName">Name</label>
+            <input type="text" id="customerName" name="customerName" required>
+          </div>
+          <div class="form-group">
+            <label for="companyName">Company/Group (Optional)</label>
+            <input type="text" id="companyName" name="companyName">
+          </div>
+        </div>
+        <div class="form-row two-col">
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="_replyto" required>
+          </div>
+          <div class="form-group">
+            <label for="phone">Phone</label>
+            <input type="tel" id="phone" name="phone" placeholder="(XXX) XXX-XXXX">
+          </div>
+        </div>
+      </div>
+
+      <!-- Delivery Method -->
+      <div class="form-section">
+        <div class="section-title">Delivery Method</div>
+        <div class="form-row two-col">
+          <label class="option-card" onclick="selectOption(this)">
+            <input type="radio" name="deliveryMethod" value="Pick Up" required>
+            <span class="option-icon">🏪</span>
+            <div class="option-title">Pick Up</div>
+          </label>
+          <label class="option-card" onclick="selectOption(this)">
+            <input type="radio" name="deliveryMethod" value="Drop Off">
+            <span class="option-icon">🚗</span>
+            <div class="option-title">Drop Off</div>
+          </label>
+        </div>
+        <div class="form-row" style="margin-top:20px;">
+          <div class="form-group">
+            <label for="pickupDate">When do you need this?</label>
+            <input type="date" id="pickupDate" name="pickupDate">
+          </div>
+        </div>
+      </div>
+
+      <!-- Pricing -->
+      <div class="form-section">
+        <div class="section-title">Pricing</div>
+        <div class="pricing-message">
+          <div class="pricing-icon">💫</div>
+          <div class="pricing-title">Hey, great news!</div>
+          <div class="pricing-text">
+            I'll calculate your exact price based on your specific needs and get back to you super quick!
+            Every order is unique, so I want to make sure you get the best deal possible.
+            Let me take care of that for you!
+          </div>
+        </div>
+      </div>
+
+      <!-- Payment Method -->
+      <div class="form-section">
+        <div class="section-title">Payment Method</div>
+        <div class="form-row two-col">
+          <label class="option-card" onclick="selectOption(this)">
+            <input type="radio" name="paymentMethod" value="Cash" required>
+            <span class="option-icon">💵</span>
+            <div class="option-title">Cash</div>
+          </label>
+          <label class="option-card" onclick="selectOption(this)">
+            <input type="radio" name="paymentMethod" value="Venmo">
+            <span class="option-icon">📱</span>
+            <div class="option-title">Venmo</div>
+          </label>
+          <label class="option-card" onclick="selectOption(this)">
+            <input type="radio" name="paymentMethod" value="Zelle">
+            <span class="option-icon">💳</span>
+            <div class="option-title">Zelle</div>
+          </label>
+        </div>
+      </div>
+
+      <!-- Notes -->
+      <div class="form-section">
+        <div class="section-title">Notes</div>
+        <textarea name="notes" placeholder="Any other details I should know about?"></textarea>
+      </div>
+
+      <button type="submit" class="submit-btn" id="submitBtn">Submit Order</button>
+    </div>
+
+    <textarea name="Order_Summary" id="orderSummaryField" style="display:none;"></textarea>
+    </form>
+  </div>
+
+<script>
+  // ---------- CST helpers ----------
+  function getCSTParts(date=new Date()){
+    const fmt = new Intl.DateTimeFormat('en-CA', {
+      timeZone:'America/Chicago', year:'2-digit', month:'2-digit', day:'2-digit',
+      hour:'2-digit', minute:'2-digit', hour12:false
+    });
+    const parts = Object.fromEntries(fmt.formatToParts(date).map(p => [p.type, p.value]));
+    return {yy:parts.year, mm:parts.month, dd:parts.day, HH:parts.hour, MM:parts.minute};
+  }
+  function makeOrderNumberCST(){ const p = getCSTParts(); return `${p.yy}${p.mm}${p.dd}-${p.HH}${p.MM}`; }
+  function setOrderDateCST(inputEl){
+    const fmt = new Intl.DateTimeFormat('en-CA',{timeZone:'America/Chicago',year:'numeric',month:'2-digit',day:'2-digit'});
+    const [{value:y},,{value:m},,{value:d}] = fmt.formatToParts(new Date());
+    inputEl.value = `${y}-${m}-${d}`;
+  }
+
+  // ---------- size lists ----------
+  const sizeOptions = {
+    adult: ['S','M','L','XL','2X','3X','4X','5X'],
+    youth: ['XS (2-4)','S (6-8)','M (10-12)','L (14-16)','XL (18-20)']
+  };
+  function updateSizeOptionsScoped(containerEl, itemNum, type, designIndex){
+    const sel = containerEl?.querySelector?.(`#size_${itemNum}_d${designIndex}`);
+    if(!sel) return;
+    sel.innerHTML = '<option value="">Select</option>';
+    (sizeOptions[type] || []).forEach(s => {
+      const o = document.createElement('option'); o.value = s; o.textContent = s; sel.appendChild(o);
+    });
+  }
+
+  // ---------- card radio toggle (Delivery / Payment) ----------
+  function selectOption(card){
+    const radio = card.querySelector('input[type="radio"]');
+    if(!radio) return;
+    const group = radio.name;
+    document.querySelectorAll(`input[name="${group}"]`).forEach(i => i.closest('.option-card')?.classList.remove('selected'));
+    card.classList.add('selected');
+    radio.checked = true;
+  }
+
+  // ---------- add order row ----------
+  function addOrderRow(designIndex){
+    const container = document.getElementById(`orderItemsContainer_${designIndex}`);
+    if(!container) return;
+    let counter = parseInt(container.getAttribute('data-counter'), 10) || 1;
+    counter += 1; container.setAttribute('data-counter', String(counter));
+
+    const row = document.createElement('div');
+    row.className = 'order-item-row'; row.dataset.item = counter;
+    row.innerHTML = `
+      <div class="item-header" style="grid-column:1/-1;">
+        <span class="item-number">Item #${counter}</span>
+        <button type="button" class="remove-item" onclick="this.closest('.order-item-row').remove()">Remove</button>
+      </div>
+
+      <div class="form-group">
+        <label>Size Type</label>
+        <div class="size-type-group">
+          <div class="size-type-option">
+            <input type="radio" id="type${counter}_adult_d${designIndex}" name="sizeType_${counter}_d${designIndex}" value="adult" checked>
+            <label for="type${counter}_adult_d${designIndex}">Adult</label>
+          </div>
+          <div class="size-type-option">
+            <input type="radio" id="type${counter}_youth_d${designIndex}" name="sizeType_${counter}_d${designIndex}" value="youth">
+            <label for="type${counter}_youth_d${designIndex}">Youth</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="size_${counter}_d${designIndex}">Size</label>
+        <select name="size_${counter}_d${designIndex}" id="size_${counter}_d${designIndex}">
+          <option value="">Select</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="qty_${counter}_d${designIndex}">Qty</label>
+        <input type="number" name="quantity_${counter}_d${designIndex}" id="qty_${counter}_d${designIndex}" min="1" value="1" required>
+      </div>
+
+      <div class="form-group">
+        <label for="color_${counter}_d${designIndex}">Color</label>
+        <input type="text" name="color_${counter}_d${designIndex}" id="color_${counter}_d${designIndex}" placeholder="Shirt Color">
+      </div>
+
+      <div class="form-group">
+        <label for="material_${counter}_d${designIndex}">Material</label>
+        <select name="material_${counter}_d${designIndex}" id="material_${counter}_d${designIndex}">
+          <option value="">Select</option>
+          <option value="100% Cotton">100% Cotton</option>
+          <option value="Cotton Blend">Cotton Blend</option>
+          <option value="Poly Blend">Poly Blend</option>
+          <option value="Tri-Blend">Tri-Blend</option>
+          <option value="Performance">Performance</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="style_${counter}_d${designIndex}">Style</label>
+        <select name="style_${counter}_d${designIndex}" id="style_${counter}_d${designIndex}">
+          <option value="">Select</option>
+          <option value="Unisex">Unisex</option>
+          <option value="Women">Women</option>
+          <option value="Pocket">Pocket</option>
+          <option value="Sweatshirt">Sweatshirt</option>
+          <option value="Hoodie">Hoodie</option>
+          <option value="Long Sleeve">Long Sleeve</option>
+        </select>
+      </div>
+    `;
+    container.appendChild(row);
+
+    // Prefill sizes for Adult by default and wire changes
+    updateSizeOptionsScoped(container, counter, 'adult', designIndex);
+    const a = row.querySelector(`#type${counter}_adult_d${designIndex}`);
+    const y = row.querySelector(`#type${counter}_youth_d${designIndex}`);
+    a?.addEventListener('change', () => updateSizeOptionsScoped(container, counter, 'adult', designIndex));
+    y?.addEventListener('change', () => updateSizeOptionsScoped(container, counter, 'youth', designIndex));
+  }
+
+  // ---------- DOM ready wiring ----------
+  window.addEventListener('DOMContentLoaded', () => {
+    // Order meta
+    const orderDateEl = document.getElementById('orderDate');
+    const orderNumberDisplayEl = document.getElementById('orderNumberDisplay');
+    const hiddenOrderNumberEl = document.getElementById('hiddenOrderNumber');
+    if (orderDateEl && orderNumberDisplayEl && hiddenOrderNumberEl){
+      setOrderDateCST(orderDateEl);
+      const ord = makeOrderNumberCST();
+      orderNumberDisplayEl.value = ord;
+      hiddenOrderNumberEl.value = ord;
+    }
+
+    // First design size radios + prefill
+    const container1 = document.getElementById('orderItemsContainer_1');
+    const a1 = document.getElementById('type1_adult_d1');
+    const y1 = document.getElementById('type1_youth_d1');
+    a1?.addEventListener('change', () => updateSizeOptionsScoped(container1, 1, 'adult', 1));
+    y1?.addEventListener('change', () => updateSizeOptionsScoped(container1, 1, 'youth', 1));
+    if (a1?.checked){ updateSizeOptionsScoped(container1, 1, 'adult', 1); }
+
+    // Add-row delegation
+    document.addEventListener('click', (e) => {
+      const btn = e.target.closest?.('.add-row-btn');
+      if (btn && btn.hasAttribute('data-add-row-for')){
+        const idx = parseInt(btn.getAttribute('data-add-row-for'), 10);
+        addOrderRow(idx);
+      }
+    });
+
+    // Multiple designs toggle + creator
+    const designBlocksRoot = document.getElementById('designBlocks');
+    const addDesignBtn = document.getElementById('addDesignBtn');
+    const addDesignSection = document.getElementById('addDesignSection');
+    const oneDesign = document.getElementById('oneDesign');
+    const multipleDesigns = document.getElementById('multipleDesigns');
+
+    oneDesign?.addEventListener('change', () => { if (addDesignSection) addDesignSection.style.display = 'none'; });
+    multipleDesigns?.addEventListener('change', () => { if (addDesignSection) addDesignSection.style.display = 'block'; });
+
+    function createDesignBlock(nextIndex){
+      const wrapper = document.createElement('div');
+      wrapper.className = 'design-block';
+      wrapper.setAttribute('data-design', String(nextIndex));
+      wrapper.innerHTML = `
+        <div class="form-section additional-design">
+          <div class="additional-design-title">Design #${nextIndex}</div>
+          <textarea name="designDescription_${nextIndex}" placeholder="Describe design #${nextIndex}..." rows="3" required></textarea>
+        </div>
+
+        <div class="form-section">
+          <div class="section-title">Shirt Details</div>
+          <p class="section-helper">Add each size/color combination you need.</p>
+
+          <div id="orderItemsContainer_${nextIndex}" class="order-items-container" data-counter="1">
+            <div class="order-item-row" data-item="1">
+              <div class="item-header" style="grid-column:1/-1;">
+                <span class="item-number">Item #1</span>
+                <button type="button" class="remove-item" onclick="this.closest('.order-item-row').remove()">Remove</button>
+              </div>
+
+              <div class="form-group">
+                <label>Size Type</label>
+                <div class="size-type-group">
+                  <div class="size-type-option">
+                    <input type="radio" id="type1_adult_d${nextIndex}" name="sizeType_1_d${nextIndex}" value="adult" checked>
+                    <label for="type1_adult_d${nextIndex}">Adult</label>
+                  </div>
+                  <div class="size-type-option">
+                    <input type="radio" id="type1_youth_d${nextIndex}" name="sizeType_1_d${nextIndex}" value="youth">
+                    <label for="type1_youth_d${nextIndex}">Youth</label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="size_1_d${nextIndex}">Size</label>
+                <select name="size_1_d${nextIndex}" id="size_1_d${nextIndex}">
+                  <option value="">Select</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="qty_1_d${nextIndex}">Qty</label>
+                <input type="number" name="quantity_1_d${nextIndex}" id="qty_1_d${nextIndex}" min="1" value="1" required>
+              </div>
+
+              <div class="form-group">
+                <label for="color_1_d${nextIndex}">Color</label>
+                <input type="text" name="color_1_d${nextIndex}" id="color_1_d${nextIndex}" placeholder="Shirt Color">
+              </div>
+
+              <div class="form-group">
+                <label for="material_1_d${nextIndex}">Material</label>
+                <select name="material_1_d${nextIndex}" id="material_1_d${nextIndex}">
+                  <option value="">Select</option>
+                  <option value="100% Cotton">100% Cotton</option>
+                  <option value="Cotton Blend">Cotton Blend</option>
+                  <option value="Poly Blend">Poly Blend</option>
+                  <option value="Tri-Blend">Tri-Blend</option>
+                  <option value="Performance">Performance</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="style_1_d${nextIndex}">Style</label>
+                <select name="style_1_d${nextIndex}" id="style_1_d${nextIndex}">
+                  <option value="">Select</option>
+                  <option value="Unisex">Unisex</option>
+                  <option value="Women">Women</option>
+                  <option value="Pocket">Pocket</option>
+                  <option value="Sweatshirt">Sweatshirt</option>
+                  <option value="Hoodie">Hoodie</option>
+                  <option value="Long Sleeve">Long Sleeve</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <button type="button" class="add-row-btn" data-add-row-for="${nextIndex}">Add Another Size/Color</button>
+        </div>`;
+      designBlocksRoot?.appendChild(wrapper);
+
+      const c = wrapper.querySelector(`#orderItemsContainer_${nextIndex}`);
+      const a = wrapper.querySelector(`#type1_adult_d${nextIndex}`);
+      const y = wrapper.querySelector(`#type1_youth_d${nextIndex}`);
+      a?.addEventListener('change', () => updateSizeOptionsScoped(c, 1, 'adult', nextIndex));
+      y?.addEventListener('change', () => updateSizeOptionsScoped(c, 1, 'youth', nextIndex));
+      if (a?.checked){ updateSizeOptionsScoped(c, 1, 'adult', nextIndex); }
+    }
+    addDesignBtn?.addEventListener('click', () => {
+      const count = (designBlocksRoot?.querySelectorAll('.design-block') || []).length;
+      createDesignBlock(count + 1);
+    });
+  });
+
+  // --- Netlify submit: populate Order_Summary then allow native submission ---
+  const form = document.getElementById('orderForm');
+
+  form?.addEventListener('submit', function(e) {
+    // Default blank quantities to 1
+    form.querySelectorAll('input[name^="quantity_"]').forEach(q => {
+      if (!q.value) q.value = 1;
+    });
+
+    // Build comprehensive summary organized by design
+    const designSummary = [];
+    const allDesigns = document.querySelectorAll('.design-block');
+
+    console.log('Found design blocks:', allDesigns.length);
+
+    allDesigns.forEach((designBlock, designIdx) => {
+      const designNum = designBlock.getAttribute('data-design') || (designIdx + 1);
+
+      // Get design description
+      const descTextarea = designBlock.querySelector(`textarea[name="designDescription_${designNum}"]`);
+      const description = descTextarea?.value || 'No description provided';
+
+      designSummary.push(`\n========== DESIGN #${designNum} ==========`);
+      designSummary.push(`Description: ${description}`);
+      designSummary.push(`\nItems for Design #${designNum}:`);
+
+      // Get all items for this design
+      const itemsContainer = designBlock.querySelector(`#orderItemsContainer_${designNum}`);
+      if (itemsContainer) {
+        const items = itemsContainer.querySelectorAll('.order-item-row');
+        console.log(`Design ${designNum} has ${items.length} items`);
+
+        items.forEach((row, itemIdx) => {
+          const type = row.querySelector('input[name^="sizeType_"]:checked')?.value || '';
+          const size = row.querySelector('select[name^="size_"]')?.value || '';
+          const qty  = row.querySelector('input[name^="quantity_"]')?.value || '1';
+          const color = row.querySelector('input[name^="color_"]')?.value || '';
+          const material = row.querySelector('select[name^="material_"]')?.value || '';
+          const style = row.querySelector('select[name^="style_"]')?.value || '';
+
+          designSummary.push(`  Item ${itemIdx + 1}: ${type} ${size}, Qty: ${qty}, Color: ${color}, Material: ${material}, Style: ${style}`);
+        });
+      }
+    });
+
+    const summaryText = designSummary.join('\n');
+    console.log('Order Summary:', summaryText);
+
+    // Update the static Order_Summary field
+    const summaryField = document.getElementById('orderSummaryField');
+    if (summaryField) {
+      summaryField.value = summaryText;
+    }
+
+    // Show submitting state
+    const submitBtn = document.getElementById('submitBtn');
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Submitting...';
+      submitBtn.style.background = 'linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%)';
+    }
+
+    // Allow native form submission to Netlify (don't preventDefault)
+    // Form will redirect to success page or back to form
+  });
+
+  </script>
+</body>
+</html>
